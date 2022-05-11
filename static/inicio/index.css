@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Teko:wght@500;600;700&display=swap');
+
+h1 {
+    font-family: 'Bebas Neue', cursive;
+    color: var(--dark-blue);
+    font-size: 3em;
+    letter-spacing: 1.3px;
+
+}
+h2 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2.4em;
+    color: var(--dark-blue);
+}
+
+h4 {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: var(--dark-blue);
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 1.2px;
+}
+
+img {
+    max-height: 400px;
+    display: block;
+}
+
+.card {
+    background-color: #EFEFEF;
+}
+
+#boton{
+    border: 4px #32A2B8 solid;
+    background-color: #32A2B8;
+    color: var(--white);
+}
+
+#boton:hover{
+    border: 4px var(--dark-blue) solid;
+    background-color: var(--dark-blue);
+    color: var(--yellow);
+}
