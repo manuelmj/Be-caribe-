@@ -14,9 +14,7 @@ lang="es"
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <!-- Font Awesome -->
-  <link
-  rel="stylesheet"
-  href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- Style.css -->
     <link rel="stylesheet" href="{{ url_for('static', filename="base/style.css") }}">
 
@@ -31,62 +29,13 @@ lang="es"
 
 {% block navbar %}
 
-    <nav class="navbar navbar-expand-lg navbar-mainbg">
+    <nav class="navbar-expand-lg navbar-mainbg">
     <!-- Logo -->
-    <div class="navbar-tittle">
+    <div class="navbar-tittle center-block">
         <a class="navbar-logo-background" href="/">
             <img class="navbar-logo" src="{{ url_for('static', filename='base/logo.png') }}" alt="Aquasense Logo">
         </a>
-    <a class="navbar-brand" href="/">AquaSense</a>
-    </div>
-    <!-- Collapse Button -->
-    <button 
-      class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <i class="fas fa-bars text-white"></i>
-    </button>
-    <!-- Links -->
-    <div 
-      class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-            <!-- For Styling -->
-            <div class="hori-selector">
-              <div class="left"></div>
-              <div class="right"></div>
-            </div>
-            <!-- Nav Links -->
-            <li class="nav-item {{inicio}}">
-                <a 
-                  class="nav-link" href="/">
-                  <i 
-                    class="fas fa-tachometer-alt">
-                  </i>Inicio
-                </a>
-            </li>
-            <li class="nav-item {{graficas}}">
-                <a 
-                  class="nav-link" href="/graficas">
-                  <i 
-                    class="far fa-chart-bar">
-                  </i>Graficas
-                </a>
-            </li>
-            <li class="nav-item {{predicciones}}">
-                <a 
-                  class="nav-link" href="/predicciones">
-                  <i 
-                    class="far fa-calendar-alt">
-                  </i>Predicciones
-                </a>
-            </li>
-            <li class="nav-item {{tablas}}">
-              <a 
-                class="nav-link" href="/tablas">
-                <i 
-                  class="fas fa-table">
-                </i>Tablas
-              </a>
-          </li>
-        </ul>
+    <a class="navbar-brand" href="/">BeCaribe</a>
     </div>
   </nav>
 {% endblock navbar %}
