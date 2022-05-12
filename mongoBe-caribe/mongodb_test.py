@@ -13,7 +13,7 @@ class GraphData(EmbeddedDocument):
 
 class Device(Document):
     device_name = StringField(unique=True, max_length=50, required=True)
-    activity = BooleanField(default=True)
+    last_update = DateTimeField(required=True)
     rt_temperature = DecimalField(required=True)
     rt_humidity = DecimalField(required=True)
     graph_data = ListField(EmbeddedDocumentField(GraphData))
@@ -21,11 +21,18 @@ class Device(Document):
 
 def data_sender(device_name: str, rt_temperature: float, rt_humidity: float) -> None:
     try:
+        device = Device.objects(device_name=device_name)
+        print(device)
+    except:
         device = Device(device_name=device_name,
-                        rt_temperature=rt_temperature, rt_humidity=rt_humidity)
+                        rt_temperature=rt_temperature, rt_humidity=rt_humidity, last_update=datetime.now())
         device.save()
-    except NotUniqueError:
-        device = device.objects.get(device_name=device_name)
-        device.rt_humidity = rt_humidity
-        device.rt_temperature = rt_temperature
-        device.save()
+    else:
+        device.update(last_update=datetime.now(),
+                      rt_temperature=rt_temperature, rt_humidity=rt_humidity)
+
+
+def devices_info():
+    devices = Device.objects.exclude('graph_data').exclude(
+        'rt_temperature').exclude('rt_humidity').exclude('id').to_json()
+    return devices
