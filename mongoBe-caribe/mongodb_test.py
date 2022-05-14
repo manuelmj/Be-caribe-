@@ -1,6 +1,7 @@
 from mongoengine import *
 from datetime import datetime
 from decouple import config
+import json
 
 connect(host=config('MONGO_URI'))
 
@@ -32,7 +33,15 @@ def data_sender(device_name: str, rt_temperature: float, rt_humidity: float) -> 
                       rt_temperature=rt_temperature, rt_humidity=rt_humidity)
 
 
-def devices_info():
+def devices_info() -> list:
     devices = Device.objects.exclude('graph_data').exclude(
         'rt_temperature').exclude('rt_humidity').exclude('id').to_json()
-    return devices
+    return json.loads(devices)
+
+
+def update_graph_data(device_name):
+    device = Device.objects.get(device_name=device_name)
+    graph_data = GraphData(
+        temperature=device.rt_temperature, humidity=device.rt_humidity)
+    device.graph_data.append(graph_data)
+    device.save()
