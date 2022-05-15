@@ -1,29 +1,22 @@
 from flask import Flask, render_template, url_for, Response, stream_with_context
 from flask.wrappers import Response
 from flask_bootstrap import Bootstrap
-from decouple import config
 import json
-from datetime import datetime
 from flask_moment import Moment
+from decouple import config
 from mongodb_test import *
+from flask_wtf import FlaskForm
+from wtforms import DateField, SubmitField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 moment = Moment(app)
-
 bootstrap = Bootstrap(app)
+app.config['SECRET_KEY'] = config('SECRET_KEY')
 
-
-def _datos(cur):
-    try:
-        cur.execute(
-            'SELECT fecha_hora, agua_flujo FROM datos_dia WHERE id = (SELECT MAX(id) FROM datos_dia)')
-        datos_tiempo_real = cur.fetchall()
-        json_data = json.dumps(
-            {'fecha': datos_tiempo_real[0][0].strftime("%d/%m/%Y %H:%M:%S"), 'numero1': datos_tiempo_real[0][1]})
-    except:
-        json_data = json.dumps(
-            {'fecha':  datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'numero1': 0})
-    yield f"data:{json_data}\n\n"
+class DateForm(FlaskForm):
+    date = DateField(format='%Y-%m-%d',validators=[DataRequired()])
+    submit = SubmitField('Buscar')
     
 def _data_gauge(device_name):
     
@@ -31,7 +24,6 @@ def _data_gauge(device_name):
     json_data = json.dumps({'temperature': float(variables.rt_temperature),
                             'humidity': float(variables.rt_humidity)})
     
-
     yield f"data:{json_data}\n\n"
 
 @app.route('/')
@@ -41,10 +33,12 @@ def index():
     return render_template('index.html', devices=devices)
 
 
-@app.route('/dashboard/<device_name>')
+@app.route('/dashboard/<device_name>', methods=['GET', 'POST'])
 def dashboard(device_name):
+    form = DateForm()
+        
     
-    return render_template('dashboard.html', device_name=device_name)
+    return render_template('dashboard.html', device_name=device_name, form=form)
 
 
 
@@ -83,15 +77,6 @@ def flujo_tiempo_real(device_name):
     enviar = _data_gauge(device_name)
     
     return Response(stream_with_context(enviar), mimetype='text/event-stream')
-
-@app.route('/predicciones')
-def predicciones():
-    cur = mysql.get_db().cursor()
-    cur.execute(
-        "SELECT * FROM datos_prediction")
-    valores = cur.fetchall()
-
-    return render_template('predicciones.html', predicciones="active", valores=valores)
 
 
 if __name__ == "__main__":

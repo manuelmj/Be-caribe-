@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='dashboard/dashboard.css') }}">
@@ -9,15 +10,14 @@
 
 {% block page_content %}
     <div class="row">
-        <div class="col-md-12 pt-5 pb-4">
+        <div class="col-md-12 mt-5 mb-4">
             <h3 class="text-center">{{ device_name }}: Centro de monitoreo</h3>
         </div>
 
-        <div class="col-md-6 pt-2 pb-4">
+        <div class="col-md-6 ">
             <h4 class="text-center mb-3">
                 Temperatura
             </h4>
-            <h4 id="temp"></h4> 
             <div class="card">
                 <div class="card-body">
                     <canvas id="temperature_gauge" width="200", height="100"></canvas> 
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="col-md-6 pt-2 pb-4">
+        <div class="col-md-6">
             <h4 class="text-center mb-3">
                 Humedad
             </h4>
@@ -35,7 +35,20 @@
                 </div>
             </div>
         </div>
-
+        
+        <div class="col-md-12 mt-5">
+            {{ form.csrt_token}}
+            {{ form.date.label }} {{ form.date(class="datepicker") }} {{ form.hidden_tag()}} 
+            {{ form.submit }}    
+            <h4 class="text-center mb-3">
+                graficasdkfasfksf
+            </h4>
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="humidity_temperature" width="200", height="100"></canvas> 
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock page_content %}
@@ -45,12 +58,13 @@
     {{ super() }}
     <script src="{{ url_for('static', filename='dashboard/dashboard.js') }}"></script>
     <script>
-
+        function funcion (){
+            console.log("enviado");
+        }
     const source = new EventSource("/tiempo_real/{{ device_name }}");
 
     source.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        console.log(data);
         chart_temp.data.datasets[0].data = [data.temperature, 100-data.temperature];
         chart_hum.data.datasets[0].data = [data.humidity, 100-data.humidity];
         chart_temp.update();
