@@ -58,7 +58,6 @@ def graph_data_update(device_name: str) -> None:
                            temperature=device.rt_temperature, humidity=device.rt_humidity)
     graph_data.save()
 
-<<<<<<< HEAD
 
 def delete_device(device_name: str) -> None:
     device = Device.objects(device_name=device_name).get()
@@ -66,5 +65,3 @@ def delete_device(device_name: str) -> None:
     if device.last_update < datetime.utcnow() - timedelta(weeks=3):
         device.delete()
         graph_data.delete()
-=======
->>>>>>> 4f1735c86c79fdd9be4a65beca4b7a0b82bb4e60
