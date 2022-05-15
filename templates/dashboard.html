@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard/dashboard.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock head %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12 pt-5 pb-4">
+            <h3 class="text-center">{{ device_name }}: Centro de monitoreo</h3>
+        </div>
+
+        <div class="col-md-6 pt-2 pb-4">
+            <h4 class="text-center mb-3">
+                Temperatura
+            </h4>
+            <h4 id="temp"></h4> 
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="temperature_gauge" width="200", height="100"></canvas> 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 pt-2 pb-4">
+            <h4 class="text-center mb-3">
+                Humedad
+            </h4>
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="humidity_gauge" width="200", height="100"></canvas> 
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock page_content %}
+
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='dashboard/dashboard.js') }}"></script>
+    <script>
+
+    const source = new EventSource("/tiempo_real/{{ device_name }}");
+
+    source.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        console.log(data);
+        chart_temp.data.datasets[0].data = [data.temperature, 100-data.temperature];
+        chart_hum.data.datasets[0].data = [data.humidity, 100-data.humidity];
+        chart_temp.update();
+        chart_hum.update();
+    }
+    </script>
+{% endblock scripts %}

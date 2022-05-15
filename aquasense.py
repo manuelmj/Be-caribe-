@@ -1,20 +1,16 @@
 from flask import Flask, render_template, url_for, Response, stream_with_context
 from flask.wrappers import Response
 from flask_bootstrap import Bootstrap
-from flaskext.mysql import MySQL
 from decouple import config
 import json
 from datetime import datetime
+from flask_moment import Moment
+from mongodb_test import *
 
 app = Flask(__name__)
-bootstrap = Bootstrap(app)
+moment = Moment(app)
 
-#mysql = MySQL()
-#app.config['MYSQL_DATABASE_HOST'] = config('HOST')
-#app.config['MYSQL_DATABASE_USER'] = config('USER_DB')
-#app.config['MYSQL_DATABASE_PASSWORD'] = config('PASSWORD_DB')
-#app.config['MYSQL_DATABASE_DB'] = config('NAME_DB')
-#mysql.init_app(app)
+bootstrap = Bootstrap(app)
 
 
 def _datos(cur):
@@ -28,10 +24,28 @@ def _datos(cur):
         json_data = json.dumps(
             {'fecha':  datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'numero1': 0})
     yield f"data:{json_data}\n\n"
+    
+def _data_gauge(device_name):
+    
+    variables = devices_var(device_name)
+    json_data = json.dumps({'temperature': float(variables.rt_temperature),
+                            'humidity': float(variables.rt_humidity)})
+    
+
+    yield f"data:{json_data}\n\n"
 
 @app.route('/')
 def index():
-    return render_template('index.html', inicio="active")
+    devices = devices_info()
+
+    return render_template('index.html', devices=devices)
+
+
+@app.route('/dashboard/<device_name>')
+def dashboard(device_name):
+    
+    return render_template('dashboard.html', device_name=device_name)
+
 
 
 @app.route('/graficas')
@@ -64,11 +78,9 @@ def tablas():
     valores = cur.fetchall()
     return render_template('tablas.html', tablas="active", valores=valores)
 
-@app.route('/flujo_tiempo_real')
-def flujo_tiempo_real():
-    cur = mysql.get_db().cursor()
-    
-    enviar = _datos(cur)
+@app.route('/tiempo_real/<device_name>')
+def flujo_tiempo_real(device_name):
+    enviar = _data_gauge(device_name)
     
     return Response(stream_with_context(enviar), mimetype='text/event-stream')
 

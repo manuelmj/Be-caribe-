@@ -83,24 +83,20 @@
 
         <div class="mt-5 row row-cols-1 row-cols-md-3 g-4">
 
-          {% for i in range(5) %}
-            <div class="col mt-3 p-3">
+          {% for device in devices %}
+            <a class="col mt-3 p-3" href='/dashboard/{{ device.device_name }}'>
               <div class="card h-100">
 
                 <div class="card-logo">
                   <i class="fa-solid fa-microchip"></i>
-                  <h5 class="title-card">Dispositivo x</h5>
+                  <h5 class="title-card">{{ device.device_name }}</h5>
                 </div>
                 <svg class="card-wave" xmlns="http://www.w3.org/2000/svg" width="100%"viewBox="0 0 1440 320"><path fill="#1E50D3" fill-opacity="1" d="M0,128L48,112C96,96,192,64,288,69.3C384,75,480,117,576,149.3C672,181,768,203,864,197.3C960,192,1056,160,1152,138.7C1248,117,1344,107,1392,101.3L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>
-                <div class="card-body">
-                  
-                  <p class="card-text">descripción del Dispositivo</p>
-                </div>
                 <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
+                  <small class="text-muted">Ultima vez {{ moment(device.last_update).format('LLL') }}</small>
                 </div>
-              </div>
-            </div>
+              </div>  
+            </a>
           {% endfor %}
         
         </div>
@@ -111,5 +107,5 @@
 
 {% block scripts %}
   {{ super() }}
-  <script src="{{ url_for('static', filename='inicio/index.js') }}"></script>
+
 {% endblock scripts %}
