@@ -10,7 +10,7 @@ settings.py
 
 # Distribution / packaging
 .Python
-.env/
+env/
 mongoBe-caribe/.env
 build/
 develop-eggs/
@@ -58,4 +58,3 @@ docs/_build/
 
 # PyBuilder
 target/
-.gitingore

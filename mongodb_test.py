@@ -1,12 +1,13 @@
 from mongoengine import *
-from datetime import datetime, timedelta
+from datetime import datetime
 from decouple import config
 
 
 connect(host=config('MONGO_URI'))
 
 
-class GraphData(EmbeddedDocument):
+class GraphData(Document):
+    device_name = StringField(required=True, max_length=50)
     temperature = DecimalField(required=True)
     humidity = DecimalField(requiered=True)
     date = DateTimeField(required=True, default=datetime.utcnow())
@@ -17,7 +18,6 @@ class Device(Document):
     last_update = DateTimeField(required=True)
     rt_temperature = DecimalField(required=True)
     rt_humidity = DecimalField(required=True)
-    graph_data = ListField(EmbeddedDocumentField(GraphData))
 
 
 def data_sender(device_name: str, rt_temperature: float, rt_humidity: float) -> None:
@@ -34,28 +34,30 @@ def data_sender(device_name: str, rt_temperature: float, rt_humidity: float) -> 
 
 
 def devices_info():
-    devices = Device.objects.exclude('graph_data').exclude(
+    devices = Device.objects.exclude(
         'rt_temperature').exclude('rt_humidity').exclude('id')
     return devices
 
 
 def devices_var(device_name):
-    devices = Device.objects(device_name=device_name).exclude('graph_data').exclude(
+    devices = Device.objects(device_name=device_name).exclude(
         'device_name').exclude('last_update').exclude('id').get()
     return devices
 
 
-def devices_graph(device_name: str, date_from: datetime) -> list:
-    raw_query = {'device_name': device_name,
-                 'graph_data.date': {'$gte': date_from}}
-    device = Device.objects(__raw__=raw_query).exclude('device_name').exclude(
-        'last_update').exclude('id').exclude('rt_temperature').exclude('rt_humidity').get()
-    return device
+def devices_graph(device_name: str, date_from: datetime, date_to: datetime) -> list:
+    graph_data = GraphData.objects(
+        device_name=device_name, date__gte=date_from, date__lte=date_to).exclude('id').exclude('device_name')
+    return graph_data
 
 
 def graph_data_update(device_name: str) -> None:
-    device = Device.objects(device_name=device_name).get()
-    graph_data = GraphData(
-        temperature=device.rt_temperature, humidity=device.rt_humidity)
-    device.graph_data.append(graph_data)
-    device.save()
+    device = Device.objects(device_name=device_name).exclude(
+        'id').exclude('last_update').get()
+    graph_data = GraphData(device_name=device_name,
+                           temperature=device.rt_temperature, humidity=device.rt_humidity)
+    graph_data.save()
+
+
+for i in devices_graph('test2', datetime(2022, 5, 10), datetime(2022, 5, 16)):
+    print(i.temperature, i.humidity, i.date)
