@@ -65,7 +65,7 @@ $(document).ready(function () {
 
     const lineChart = new Chart(context, config);
 
-    const source = new EventSource("/flujo_tiempo_real");
+   // const source = new EventSource("/flujo_tiempo_real");
 
     source.onmessage = function (event) {
         const data = JSON.parse(event.data);
