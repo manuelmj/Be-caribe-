@@ -1,5 +1,5 @@
 from mongoengine import *
-from datetime import datetime
+from datetime import datetime, timedelta
 from decouple import config
 
 
@@ -59,5 +59,9 @@ def graph_data_update(device_name: str) -> None:
     graph_data.save()
 
 
-for i in devices_graph('test2', datetime(2022, 5, 10), datetime(2022, 5, 16)):
-    print(i.temperature, i.humidity, i.date)
+def delete_device(device_name: str) -> None:
+    device = Device.objects(device_name=device_name).get()
+    graph_data = GraphData.objects(device_name=device_name)
+    if device.last_update < datetime.utcnow() - timedelta(weeks=3):
+        device.delete()
+        graph_data.delete()
