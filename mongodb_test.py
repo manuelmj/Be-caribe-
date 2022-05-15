@@ -58,6 +58,3 @@ def graph_data_update(device_name: str) -> None:
                            temperature=device.rt_temperature, humidity=device.rt_humidity)
     graph_data.save()
 
-
-for i in devices_graph('test2', datetime(2022, 5, 10), datetime(2022, 5, 16)):
-    print(i.temperature, i.humidity, i.date)

@@ -37,9 +37,12 @@
         </div>
         
         <div class="col-md-12 mt-5">
-            {{ form.csrt_token}}
-            {{ form.date.label }} {{ form.date(class="datepicker") }} {{ form.hidden_tag()}} 
-            {{ form.submit }}    
+            <form method="post">
+                {{ form.csrt_token}}
+                {{ form.date_from.label }} {{ form.date_from(class="datepicker") }} {{ form.hidden_tag()}} 
+                {{ form.date_to.label }} {{ form.date_to(class="datepicker") }} {{ form.hidden_tag()}} 
+                {{ form.submit }} 
+            </form>   
             <h4 class="text-center mb-3">
                 graficasdkfasfksf
             </h4>
@@ -58,9 +61,99 @@
     {{ super() }}
     <script src="{{ url_for('static', filename='dashboard/dashboard.js') }}"></script>
     <script>
-        function funcion (){
-            console.log("enviado");
-        }
+
+        var chartData = {
+            labels : [{% for dato in data %}
+                "{{ dato.date }}",
+                {% endfor %}],
+            datasets : [{
+                label: 'Temperatura',
+                fill: true,
+                lineTension: 0.1,
+                backgroundColor: "rgba(114,103,167,0.2)",
+                borderColor: "rgba(107,76,154,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'mister',
+                pointBorderColor: "rgba(107,76,154,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(107,76,154,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data : [{% for dato in data %}
+                        {{ dato.temperature }},
+                    {% endfor %}],
+                spanGaps: false
+            },
+            {
+                label: 'Humedad',
+                fill: true,
+                lineTension: 0.1,
+                backgroundColor: "rgba(114,103,167,0.2)",
+                borderColor: "rgba(107,76,154,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'mister',
+                pointBorderColor: "rgba(107,76,154,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(107,76,154,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data : [{% for dato in data %}
+                        {{ dato.humidity }},
+                    {% endfor %}],
+                spanGaps: false
+            }]
+        };
+    console.log(chartData.datasets) 
+        var ctx = document.getElementById("humidity_temperature").getContext("2d");
+
+        var acumulados1 = new Chart(ctx, {
+            type: 'line',
+            data: chartData,
+            options: {
+                responsive: true,
+                    legend: {
+                        labels: {
+                            usePointStyle: false
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        gridLines: {
+                            color: "rgba(0, 0, 0, 0)",
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Hora'
+                        },
+                        ticks: {
+                            display: false
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Flujo de agua (L/min)'
+                        }
+                    }]
+                },
+            }
+        });
+        
+
     const source = new EventSource("/tiempo_real/{{ device_name }}");
 
     source.onmessage = function (event) {
