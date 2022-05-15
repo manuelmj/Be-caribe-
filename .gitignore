@@ -7,7 +7,6 @@ media/
 settings.py
 # C extensions
 *.so
-
 # Distribution / packaging
 .Python
 env/
@@ -49,6 +48,7 @@ coverage.xml
 # Translations
 *.mo
 *.pot
+.env
 
 # Django stuff:
 *.log

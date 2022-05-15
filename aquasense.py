@@ -1,6 +1,8 @@
-from flask import Flask, render_template, url_for, Response, stream_with_context
+from operator import imod
+from flask import Flask, redirect, render_template, session, url_for, Response, stream_with_context
 from flask.wrappers import Response
 from flask_bootstrap import Bootstrap
+from datetime import datetime, time
 import json
 from flask_moment import Moment
 from decouple import config
@@ -15,7 +17,8 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = config('SECRET_KEY')
 
 class DateForm(FlaskForm):
-    date = DateField(format='%Y-%m-%d',validators=[DataRequired()])
+    date_from = DateField(validators=[DataRequired()])
+    date_to = DateField(validators=[DataRequired()])
     submit = SubmitField('Buscar')
     
 def _data_gauge(device_name):
@@ -36,9 +39,15 @@ def index():
 @app.route('/dashboard/<device_name>', methods=['GET', 'POST'])
 def dashboard(device_name):
     form = DateForm()
-        
+    if form.validate_on_submit():
+        data = devices_graph(device_name, 
+                            datetime.combine(form.date_from.data, time()),
+                            datetime.combine(form.date_to.data, time()))
+
+        return render_template('dashboard.html', device_name=device_name, data=data, form=form)
     
-    return render_template('dashboard.html', device_name=device_name, form=form)
+    return render_template('dashboard.html', device_name=device_name, 
+                           form=form, data=[])
 
 
 
