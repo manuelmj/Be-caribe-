@@ -17,8 +17,8 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = config('SECRET_KEY')
 
 class DateForm(FlaskForm):
-    date_from = DateField(validators=[DataRequired()])
-    date_to = DateField(validators=[DataRequired()])
+    date_from = DateField('Datos desde:',validators=[DataRequired()])
+    date_to = DateField('hasta:',validators=[DataRequired()])
     submit = SubmitField('Buscar')
     
 def _data_gauge(device_name):
