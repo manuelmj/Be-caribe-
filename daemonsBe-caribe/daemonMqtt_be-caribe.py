@@ -1,12 +1,10 @@
 from datetime import datetime
 from enum import unique
-import time
 from unicodedata import decimal
 import paho.mqtt.client as mqtt
 import json
-import requests
-from  decouple import config
-from guardar_mqtt_db import cargarDB
+from  decouple import Config
+from mongodb_test import data_sender 
 from mongoengine import *
 
 connected_flag = False
@@ -15,34 +13,29 @@ counter = 0
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("Connected with result code " + str(rc))
-        print(probando) 
     else:
         print("unexpected disconenection. resultcode "+ str(rc))
 
-
+#########################################33
 def on_message(client, userdata, msg):
+    
     global connected_flag
     global counter 
     counter = 0
     connected_flag = True
 
-    valores_json = str(msg.payload, 'utf-8')
-    valores = json.loads(valores_json)
-    valores["fecha_hora"]=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-    print(valores["fecha_hora"])
-   
+    data_json = str(msg.payload, 'utf-8')
+    data = json.loads(data_json)
 
     try:
-        cargarDB(valores)
+        data_sender(data["device_name"],data["rt_temperature"],data["rt_humidity"])
     except:
         pass
 
+############################
 
 def unexpected_disconnect():
-    valores["fecha_hora"]=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-    valores["flujo_agua"]=0
-   # cargarBD(valores)
-
+   data_sender(data["device_name"],0.0,0.0)
 
 def run():
     global counter

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard/dashboard.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock head %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12 mt-5 mb-4">
+            <h3 class="text-center">{{ device_name }}: Centro de monitoreo</h3>
+        </div>
+
+        <div class="col-md-6 ">
+            <h4 class="text-center mb-3">
+                Temperatura
+            </h4>
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="temperature_gauge" width="200", height="100"></canvas> 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h4 class="text-center mb-3">
+                Humedad
+            </h4>
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="humidity_gauge" width="200", height="100"></canvas> 
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-12 mt-5">  
+            <h4 class="text-center mb-4">
+                Datos por fecha
+            </h4>
+            <form method="post">
+                {{ form.csrt_token}}
+                {{ form.date_from.label }} {{ form.date_from(class="datepicker") }} {{ form.hidden_tag()}} 
+                {{ form.date_to.label }} {{ form.date_to(class="datepicker") }} {{ form.hidden_tag()}} 
+                {{form.submit(class="btn", id='submit')}}
+            </form> 
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="humidity_temperature" width="200", height="100"></canvas> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock page_content %}
+
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='dashboard/dashboard.js') }}"></script>
+    <script>
+
+        var chartData = {
+            labels : [{% for dato in data %}
+                "{{ dato.date }}",
+                {% endfor %}],
+            datasets : [{
+                label: 'Temperatura °C',
+                backgroundColor: '#F05454',
+                borderColor: '#F05454',
+                tension: 0.1,
+                borderJoinStyle: 'round',
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "#F05454",
+                pointRadius: 1.8,
+                pointHitRadius: 10,
+                data : [{% for dato in data %}
+                        {{ dato.temperature }},
+                    {% endfor %}],
+            },
+            {
+                label: 'Humedad %',
+                backgroundColor: 'rgb(54, 162, 235)',
+                borderColor: "rgb(54, 162, 235)",
+                tension: 0.1,
+                borderJoinStyle: 'round',
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgb(54, 162, 235)",
+                pointRadius: 1.8,
+                pointHitRadius: 10,
+                data : [{% for dato in data %}
+                        {{ dato.humidity }},
+                    {% endfor %}],
+            }]
+        };
+        
+        var ctx = document.getElementById("humidity_temperature").getContext("2d");
+
+        var acumulados1 = new Chart(ctx, {
+            type: 'line',
+            data: chartData,
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        display: true,
+                        grid: {
+                            display: false,
+                        },
+                        ticks: {
+                            display: false
+                        },
+                        title: {
+                            text: 'Tiempo',
+                            display: true,
+                            color: '#ffffff',
+                            font: {
+                                size: 14,
+                            }
+                        },
+                    },
+                    y: {
+                        display: true,
+                        beginAtZero: true,
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                               size: 14,
+                            }
+                        }
+                    }
+                },
+            }
+        });
+        
+
+    const source = new EventSource("/tiempo_real/{{ device_name }}");
+
+    source.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        chart_temp.data.datasets[0].data = [data.temperature, 100-data.temperature];
+        chart_hum.data.datasets[0].data = [data.humidity, 100-data.humidity];
+        chart_temp.update();
+        chart_hum.update();
+    }
+    </script>
+{% endblock scripts %}

@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Teko:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap'); 
+
+h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.4em;
+    font-weight: 800;
+    letter-spacing: -3px;
+    text-transform: uppercase;
+    color: var(--white);
+}
+
+h4 {
+    font-size: 1.5em;
+    color: var(--orange);
+    font-weight: bold;
+
+}
+
+.card {
+    box-shadow: rgba(0, 0, 0, 0.25) 8px 8px 10px 0px;
+    background-color: var(--mid-blue);
+    border-radius: 10px;
+}
+canvas{
+    max-height: 30vh;
+}
+
+
+label{
+    font-family: 'Open Sans', sans-serif;
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+form{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+    
+}
+.datepicker{
+    background-color: var(--mid-blue);
+    padding: 5px;
+    color: var(--white);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+#submit {
+    background-color: var(--orange);
+    color: var(--white);
+}
+
+#submit:hover{
+    background-color: #FF2525;
+}
+
+::webkit-calendar-picker-indicator{
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}

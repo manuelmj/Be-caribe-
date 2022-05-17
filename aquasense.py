@@ -1,37 +1,54 @@
-from flask import Flask, render_template, url_for, Response, stream_with_context
+from operator import imod
+from flask import Flask, redirect, render_template, session, url_for, Response, stream_with_context
 from flask.wrappers import Response
 from flask_bootstrap import Bootstrap
-from flaskext.mysql import MySQL
-from decouple import config
+from datetime import datetime, time
 import json
-from datetime import datetime
+from flask_moment import Moment
+from decouple import config
+from mongodb_test import *
+from flask_wtf import FlaskForm
+from wtforms import DateField, SubmitField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
+moment = Moment(app)
 bootstrap = Bootstrap(app)
+app.config['SECRET_KEY'] = config('SECRET_KEY')
 
-#mysql = MySQL()
-#app.config['MYSQL_DATABASE_HOST'] = config('HOST')
-#app.config['MYSQL_DATABASE_USER'] = config('USER_DB')
-#app.config['MYSQL_DATABASE_PASSWORD'] = config('PASSWORD_DB')
-#app.config['MYSQL_DATABASE_DB'] = config('NAME_DB')
-#mysql.init_app(app)
-
-
-def _datos(cur):
-    try:
-        cur.execute(
-            'SELECT fecha_hora, agua_flujo FROM datos_dia WHERE id = (SELECT MAX(id) FROM datos_dia)')
-        datos_tiempo_real = cur.fetchall()
-        json_data = json.dumps(
-            {'fecha': datos_tiempo_real[0][0].strftime("%d/%m/%Y %H:%M:%S"), 'numero1': datos_tiempo_real[0][1]})
-    except:
-        json_data = json.dumps(
-            {'fecha':  datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'numero1': 0})
+class DateForm(FlaskForm):
+    date_from = DateField('Datos desde:',validators=[DataRequired()])
+    date_to = DateField('hasta:',validators=[DataRequired()])
+    submit = SubmitField('Buscar')
+    
+def _data_gauge(device_name):
+    
+    variables = devices_var(device_name)
+    json_data = json.dumps({'temperature': float(variables.rt_temperature),
+                            'humidity': float(variables.rt_humidity)})
+    
     yield f"data:{json_data}\n\n"
 
 @app.route('/')
 def index():
-    return render_template('index.html', inicio="active")
+    devices = devices_info()
+
+    return render_template('index.html', devices=devices)
+
+
+@app.route('/dashboard/<device_name>', methods=['GET', 'POST'])
+def dashboard(device_name):
+    form = DateForm()
+    if form.validate_on_submit():
+        data = devices_graph(device_name, 
+                            datetime.combine(form.date_from.data, time()),
+                            datetime.combine(form.date_to.data, time()))
+
+        return render_template('dashboard.html', device_name=device_name, data=data, form=form)
+    
+    return render_template('dashboard.html', device_name=device_name, 
+                           form=form, data=[])
+
 
 
 @app.route('/graficas')
@@ -64,22 +81,11 @@ def tablas():
     valores = cur.fetchall()
     return render_template('tablas.html', tablas="active", valores=valores)
 
-@app.route('/flujo_tiempo_real')
-def flujo_tiempo_real():
-    cur = mysql.get_db().cursor()
-    
-    enviar = _datos(cur)
+@app.route('/tiempo_real/<device_name>')
+def flujo_tiempo_real(device_name):
+    enviar = _data_gauge(device_name)
     
     return Response(stream_with_context(enviar), mimetype='text/event-stream')
-
-@app.route('/predicciones')
-def predicciones():
-    cur = mysql.get_db().cursor()
-    cur.execute(
-        "SELECT * FROM datos_prediction")
-    valores = cur.fetchall()
-
-    return render_template('predicciones.html', predicciones="active", valores=valores)
 
 
 if __name__ == "__main__":
