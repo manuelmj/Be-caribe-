@@ -20,7 +20,8 @@ class DateForm(FlaskForm):
     date_from = DateField('Datos desde:',validators=[DataRequired()])
     date_to = DateField('hasta:',validators=[DataRequired()])
     submit = SubmitField('Buscar')
-    
+
+
 def _data_gauge(device_name):
     
     variables = devices_var(device_name)
@@ -28,6 +29,7 @@ def _data_gauge(device_name):
                             'humidity': float(variables.rt_humidity)})
     
     yield f"data:{json_data}\n\n"
+
 
 @app.route('/')
 def index():
@@ -48,38 +50,6 @@ def dashboard(device_name):
     
     return render_template('dashboard.html', device_name=device_name, 
                            form=form, data=[])
-
-
-
-@app.route('/graficas')
-def graficas():
-    cur = mysql.get_db().cursor()
-    cur.execute(
-        "SELECT agua_flujo, fecha_hora FROM datos_dia WHERE fecha_hora > DATE_ADD(NOW(), INTERVAL -10 HOUR)")
-    flujo_dia = cur.fetchall()
-
-    cur.execute(
-        "SELECT  maximo_flujo, fecha FROM datos_semana")
-    flujo_semana = cur.fetchall()
-    
-    cur.execute(
-        "SELECT maximo_flujo FROM datos_semana WHERE week(fecha)=week(now())")
-    flujo_semana_actual = cur.fetchall()
-    print(flujo_semana_actual)
-    
-    
-    return render_template('graficas.html', graficas="active",
-                           flujo_dia=flujo_dia, flujo_semana=flujo_semana,
-                           flujo_semana_actual=flujo_semana_actual)
-
-
-@app.route('/tablas')
-def tablas():
-    cur = mysql.get_db().cursor()
-    cur.execute(
-        "SELECT * FROM datos_semana")
-    valores = cur.fetchall()
-    return render_template('tablas.html', tablas="active", valores=valores)
 
 @app.route('/tiempo_real/<device_name>')
 def flujo_tiempo_real(device_name):
