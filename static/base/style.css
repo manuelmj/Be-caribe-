@@ -29,7 +29,7 @@ i {
 .navbar-tittle{
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     text-decoration: none;
 }
@@ -52,7 +52,6 @@ i {
 
 .navbar-logo{
     height: 60px;
-    margin: 10px 0px 10px 50px;
     width: auto;
 }
 
