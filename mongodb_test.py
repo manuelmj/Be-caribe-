@@ -51,12 +51,12 @@ def devices_graph(device_name: str, date_from: datetime, date_to: datetime) -> l
     return graph_data
 
 
-def graph_data_update(device_name: str) -> None:
-    device = Device.objects(device_name=device_name).exclude(
-        'id').exclude('last_update').get()
-    graph_data = GraphData(device_name=device_name,
-                           temperature=device.rt_temperature, humidity=device.rt_humidity)
-    graph_data.save()
+def graph_data_update() -> None:
+    devices = Device.objects.exclude('id').exclude('last_update')
+    for device in devices:
+        graph_data = GraphData(device_name=device.device_name,
+                               temperature=device.rt_temperature, humidity=device.rt_humidity)
+        graph_data.save()
 
 
 def delete_device(device_name: str) -> None:
@@ -64,4 +64,3 @@ def delete_device(device_name: str) -> None:
     graph_data = GraphData.objects(device_name=device_name)
     if device.last_update < datetime.utcnow() - timedelta(weeks=3):
         device.delete()
-        graph_data.delete()
