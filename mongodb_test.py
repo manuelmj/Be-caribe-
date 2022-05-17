@@ -62,6 +62,5 @@ def graph_data_update(device_name: str) -> None:
 def delete_device(device_name: str) -> None:
     device = Device.objects(device_name=device_name).get()
     graph_data = GraphData.objects(device_name=device_name)
-    if device.last_update < datetime.utcnow() - timedelta(weeks=3):
-        device.delete()
-        graph_data.delete()
+    device.delete()
+    graph_data.delete()
