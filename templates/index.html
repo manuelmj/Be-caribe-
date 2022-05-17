@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block page_content %}
-  <header class="mt-4">
+  <header class="mt-1">
 
 
       <div class="container">
@@ -19,18 +19,18 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <img src="{{url_for('static', filename='inicio/tank.jpg')}}" alt="Los Angeles" class="d-block w-100">
+                <img src="{{url_for('static', filename='inicio/onecopy.jpg')}}" alt="Los Angeles" class="d-block w-100">
                 <div class="carousel-caption">
                   <h3>¿Quienes sómos?</h3>
-                  <p>AquaSense es un proyecto creado para brindar solución a un problema muy común en el departamento del Magdalena, el cual es la incosistencia en el servicio de agua, ayundando a notificar y llevar control sobre el flujo de agua.</p>
+                  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo laboriosam, neque amet obcaecati cupiditate illo omnis placeat itaque commodi! Quisquam deserunt necessitatibus ipsum ratione quia? Adipisci id quam a voluptate.</p>
                 </div>
               </div>
 
               <div class="carousel-item">
-                <img src="{{url_for('static', filename='inicio/circuit.jpg')}}" alt="Chicago" class="d-block w-100">
+                <img src="{{url_for('static', filename='inicio/twocopy.jpg')}}" alt="Chicago" class="d-block w-100">
                 <div class="carousel-caption">
-                  <h3>Tecnología de AquaSense</h3>
-                  <p>En AquaSense estamos a la vanguardia de la tecnología IoT, usando tecnología microcontrolada de 32 bits, sensorica, protocolos MQTT y modelos de predicción; brindando información confiable y segura a nuestros usuarios.</p>
+                  <h3>Tecnología</h3>
+                  <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum, quidem pariatur natus, dolorum error tempora obcaecati vitae nisi dicta doloribus nihil perspiciatis quaerat eum. Tempora maxime error soluta sequi ullam!</p>
                 </div>
               </div>
 
@@ -47,27 +47,26 @@
             <span class="sr-only">Next</span>
           </a>
 
-          <div class="row align-items-center mt-3">
+          <div class="row align-items-center">
           <!-- Column 1-->
           <div class="col-md-6">
-            <h1 class="mb-4 font-weight-bold">El flujo de
-              <span class="text-info">agua</span><br>actualmente es de:
-            </h1>
-            <h2 id="flujo" class="text-center">0 L/min</h2>
+            <h2 class="mb-4">
+              <span class="info">invernaderos</span><br>conectados:
+            </h2>
+            <h2 id="flujo" class="text-center">{{ devices.count() }}</h2>
             <p class="mb-2 pb-2 mt-4">
-              Esta pagina cuenta con un grupo de telegram por si desea recibir notificaciones en tiempo real cuando haya agua disponible.
-              <br>
-              <span class="font-weight-bold">¿Quieres unirte?</span>
+              Este proyecto cuenta con un blog en el que puede encontrar información reelevante con respecto a la problemática que se trata a igual que los procesos que se siguieron para implementar estos invernaderos automatizados de bajo costo.
+          
+              <span class="font-weight-bold">Echa un vistazo!</span>
             </p>
             <div>
-              <a href="https://t.me/joinchat/tplOqQHVrdkxMzEx" target="_BLANK" id="boton" class="text-center btn btn-lg btn-block">Recibir notificaciones</a>
+              <a href="https://google.com" target="_BLANK" id="boton" class="text-center btn btn-lg btn-block">Visita nuestro blog</a>
             </div>
           </div>
           <!-- Column 1 -->
 
           <!-- Column 2 -->
-          <div class="col-md-6 mt-5">
-            <h4 class="text-center">Flujo en tiempo real</h4>
+          <div class="col-md-6 mt-4 d-none d-sm-block">
             <div class="card"> 
                 <div class="card-body"> 
                     <canvas id="numero1" width="500" height="400"></canvas>
@@ -76,12 +75,13 @@
           </div>
           <!-- Column 2 -->
         </div>
-        
-        <!---inicio dispositivos-->
-        <div> Icons made by <a href="https://www.flaticon.com/authors/marz-gallery" title="Marz Gallery"> Marz Gallery </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
-        
 
-        <div class="mt-5 row row-cols-1 row-cols-md-3 g-4">
+        <div class="col-md-12 mt-5 text-center">
+          <span class="select-device">Seleccione su invernadero</span>
+        </div>
+        <!---inicio dispositivos-->
+
+        <div class="mt-2 row row-cols-1 row-cols-md-3 g-4">
 
           {% for device in devices %}
             <a class="col mt-3 p-3" href='/dashboard/{{ device.device_name }}'>
@@ -91,7 +91,7 @@
                   <i class="fa-solid fa-microchip"></i>
                   <h5 class="title-card">{{ device.device_name }}</h5>
                 </div>
-                <svg class="card-wave" xmlns="http://www.w3.org/2000/svg" width="100%"viewBox="0 0 1440 320"><path fill="#1E50D3" fill-opacity="1" d="M0,128L48,112C96,96,192,64,288,69.3C384,75,480,117,576,149.3C672,181,768,203,864,197.3C960,192,1056,160,1152,138.7C1248,117,1344,107,1392,101.3L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>
+                <svg class="card-wave" xmlns="http://www.w3.org/2000/svg" width="100%"viewBox="0 0 1440 320"><path fill="#F05454" fill-opacity="1" d="M0,128L48,112C96,96,192,64,288,69.3C384,75,480,117,576,149.3C672,181,768,203,864,197.3C960,192,1056,160,1152,138.7C1248,117,1344,107,1392,101.3L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>
                 <div class="card-footer">
                   <small class="text-muted">Ultima vez {{ moment(device.last_update).fromNow(refresh=True) }}</small>
                 </div>

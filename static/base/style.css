@@ -1,14 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap'); 
 
 :root{
     --dark-blue: #233963;
     --blue: #32A2B8;
-    --yellow: #FFC947;
     --white: #FFFFFF;
+    --dark: #222831;
+    --pastel: #DDDDDD;
+    --orange: #F05454;
+    --mid-blue: #30475E;
 }
 body {
-  font-family: 'Roboto', sans-serif;
-  background: var(--white); /* fallback for old browsers */
+  font-family: 'Open Sans', sans-serif;
+  background: var(--dark); /* fallback for old browsers */
 }
 * {
   margin: 0;
@@ -27,30 +31,28 @@ i {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    text-decoration: none;
 }
 .navbar-brand {
-    margin-left: 10px;
-  color: var(--white);
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: -3px;
+  margin: 0px;
+  color: var(--orange);
   font-style: italic;
   font-size: 2.5em;
   font-weight: bold;
+
 }
 
-.navbar-brand:hover{
-    color: var(--yellow);
+.navbar-tittle:hover{
+    transform: scale(1);
+    text-decoration: none;
 }
 
 
-.navbar-logo-background{
-    background-color: var(--white);
-    height: 58px;
+.navbar-logo{
+    height: 60px;
     width: auto;
-    border-radius: 25%;
-}
-
-.navbar-logo {
-    height: 100%;
-    width: 100%;
 }
 
 .navbar-mainbg {
@@ -64,7 +66,7 @@ footer {
 }
 
 i {
-  color: var(--white);
+  color: var(--orange);
 }
 
 #copy {

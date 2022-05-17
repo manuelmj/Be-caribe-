@@ -10,7 +10,11 @@ settings.py
 # Distribution / packaging
 .Python
 env/
+<<<<<<< HEAD
+.env/
+=======
 mongoBe-caribe/.env
+>>>>>>> f2b01e5536050be2023ca97bb73e8b375c4f97fc
 build/
 develop-eggs/
 dist/

@@ -9,8 +9,8 @@ var chart_temp = new Chart(ctx_temp, {
             label: "Temperatura",
             data : [1, 99],
             backgroundColor: [
-            "rgb(255, 99, 132)",
-            "rgb(54, 162, 235)",
+            "#F05454",
+            "#222831",
             "rgb(255, 205, 86)"
             ]
         }]
@@ -28,7 +28,7 @@ var chart_temp = new Chart(ctx_temp, {
                 enabled: false,
             },
             datalabels: {
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                backgroundColor: '#222831',
                 borderColor: '#ffffff',
                 color: function(context) {
                     return context.dataset.backgroundColor;
@@ -44,7 +44,7 @@ var chart_temp = new Chart(ctx_temp, {
                 anchor: 'start',
                 offset: 20,
                 borderRadius: 4,
-                borderWidth: 2,
+                borderWidth: 1,
                 padding: 10,
                 formatter: function(value, context) {
                     var i = context.dataIndex;
@@ -65,9 +65,9 @@ var chart_hum = new Chart(ctx_hum, {
             label: "Temperatura",
             data : [1, 99],
             backgroundColor: [
-            "rgb(255, 99, 132)",
-            "rgb(54, 162, 235)",
-            "rgb(255, 205, 86)"
+                "#F05454",
+                "#222831",
+                "rgb(255, 205, 86)"
             ]
         }]
     },
@@ -84,7 +84,7 @@ var chart_hum = new Chart(ctx_hum, {
                 enabled: false,
             },
             datalabels: {
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                backgroundColor: '#222831',
                 borderColor: '#ffffff',
                 color: function(context) {
                     return context.dataset.backgroundColor;
@@ -100,7 +100,7 @@ var chart_hum = new Chart(ctx_hum, {
                 anchor: 'start',
                 offset: 20,
                 borderRadius: 4,
-                borderWidth: 2,
+                borderWidth: 1,
                 padding: 10,
                 formatter: function(value, context) {
                     var i = context.dataIndex;
