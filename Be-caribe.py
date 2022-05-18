@@ -1,4 +1,3 @@
-from operator import imod
 from flask import Flask, redirect, render_template, session, url_for, Response, stream_with_context
 from flask.wrappers import Response
 from flask_bootstrap import Bootstrap
