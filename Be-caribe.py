@@ -41,7 +41,7 @@ def index():
 def dashboard(device_name):
     form = DateForm()
     if form.validate_on_submit():
-        data = devices_graph(device_name, 
+        data = devices_graph(device_name,   
                             datetime.combine(form.date_from.data, time()),
                             datetime.combine(form.date_to.data, time()))
 
