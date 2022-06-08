@@ -35,10 +35,12 @@ lang="es"
 
     <nav class="navbar-expand-lg navbar-mainbg">
     <!-- Logo -->
-      <a class="navbar-tittle" href="/">
-          <img class="navbar-logo d-none d-sm-block" src="{{ url_for('static', filename='base/logo.svg') }}" alt="BeCaribe-Hongos Logo">
+    <div class="navbar-tittle">
+        <img class="navbar-logo d-none d-sm-block" src="{{ url_for('static', filename='base/logo.svg') }}" alt="BeCaribe-Hongos Logo">
+        <a href="/">
           <h1 class="navbar-brand ml-1">BeCaribe-Hongos</h1>
-      </a>
+        </a>
+    </div>
   </nav>
 {% endblock navbar %}
 
@@ -112,8 +114,8 @@ lang="es"
 
     <!-- Copyright -->
     <div class="text-center p-3" id="copy">
-      © 2020 Copyright:
-      <a href="https://mdbootstrap.com/">aquasense.info.gf</a>
+      © 2022 Copyright:
+      <a href="https://mdbootstrap.com/">becaribe.org</a>
     </div>
     <!-- Copyright -->
   </footer>
