@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}Inicio AquaSense{% endblock title %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='inicio/index.css') }}">
+{% endblock %}
+
+{% block page_content %}
+<main class="mt-1 text-center" class="container">
+  <h2>Bienvenidos a nuestro blog</h2>
+  <div id="myCarousel" class="carousel slide d-none d-sm-block" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+    </ol>
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://portafolio-control-2.s3.amazonaws.com/Orellana_1.jpg" alt="Los Angeles" class="d-block w-100"
+          style="filter: brightness(50%)">
+        <div class="carousel-caption">
+          <h3>¿Que son las Orellanas?</h3>
+          <p class="font-weight-bold">Las orellanas son hongos de la especie Pleurotus son reconocidas por sus
+            propiedades medicinales y nutricionales desde la antigüedad. Son descomponedores de madera y tienen unas
+            interacciones ecológicas únicas y degradan toxinas ambientales.</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="https://portafolio-control-2.s3.amazonaws.com/Orellana_2.jpg" alt="Chicago" class="d-block w-100"
+          style="filter: brightness(50%)">
+        <div class="carousel-caption">
+          <h3>Invernadero</h3>
+          <p class="font-weight-bold">Para la creación y el prototipo del invernadero se crearon 5 grupos de trabajos,
+            cada uno tenia una como objetivo implementar una funcionalidad del mismo, la responsabilidad se dividio de
+            la siguiente manera.</p>
+          <ul>
+            <li style="list-style:none"><strong>Rol 1: </strong>Implementar la esctructura</li>
+            <li style="list-style:none"><strong>Rol 2: </strong>Sensores y Plataforma digital</li>
+            <li style="list-style:none"><strong>Rol 3: </strong>Control humedad</li>
+            <li style="list-style:none"><strong>Rol 4: </strong>Control temperarura</li>
+            <li style="list-style:none"><strong>Rol 5: </strong>Monitoreo remoto IoT</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <h2 class="mt-5">Costo de la esctructura del invernadero</h2>
+    <table border="1" class="text-light table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>material</th>
+          <th>Descripcion</th>
+          <th>Costo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <tr>
+          <td>Lamina de pvc</td>
+          <td>Material sintético a base de policlorudo de vinilo</td>
+          <td>$60000</td>
+        </tr>
+        <td>Ángulos de acero</td>
+        <td>son un perfil con sección transversal en forma de ángulo recto.</td>
+        <td>$8000</td>
+        </tr>
+        <tr>
+          <td>Gota mágica</td>
+          <td>Pegante Adhesivo Instantáneo</td>
+          <td>$4000</td>
+        </tr>
+        <tr>
+          <td>Tornillos</td>
+          <td>pieza metálica que tiene como función unir dos o más elementos</td>
+          <td>$2000</td>
+        </tr>
+        <tr>
+          <td>Canaleta</td>
+          <td>permiten que los cables no queden a la vista, al mismo tiempo que los aíslan y protegen</td>
+          <td>$5000</td>
+        </tr>
+        <tr>
+          <td>Acrílico</td>
+          <td>Material plastico o resina util para la construcción</td>
+          <td>$16000</td>
+        </tr>
+        <tr>
+          <td>Cáncamo</td>
+          <td>Anillo de metal con un tornillo o clavo que se fija en algo sólido</td>
+          <td>$1000</td>
+        </tr>
+        <tr>
+          <td>Total :</td>
+          <td></td>
+          <td>$96000</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 class="mt-5">Creacion del Invernadero</h2>
+    <div class="text-justify">
+      <p><strong>Paso 1:</strong> Se corto la lamina de PVC en 3 pedazos de 80 cm de largo de coloco una base de
+        superior de 30cm</p>
+      <p><strong>Paso 2:</strong> En la
+        Parte inferior una base de 60cm para dar apoyo a la estructura las láminas se pegaron a ángulos de acero
+        inoxidable, con gota mágica y luego se atornillaron, para mayor firmeza dándole forma a la escuctura de cubo</p>
+      <p><strong>Paso 3:</strong> Pegaron las 3 láminas de 80 cm en la base de 60 y en los bordes se sujetó a los
+        Ángulos se ubicó la
+        parte superior con ángulos y gota mágica</p>
+      <p><strong>Paso 4:</strong> Se atornilló el cáncamo en la lámina superior y a este se le sujetó con una barra de
+        ángulo para darle
+        mayor firmeza, y que no se cayera el cultivo colgante</p>
+      <p><strong>Paso 5:</strong> La puerta se le agregaron dos ángulos atornillados y pegados con gota mágica, y se
+        corto otro pedazo de
+        80 cm para hacerlo deslizable a este último pedazo se le hizo un agujero en el centro para colocar el acrílico y
+        darle visión al cultivo</p>
+      <p>
+        <trong>Paso 6:</trong> En la parte posterior se le agregó la canaleta para ubicar los cables de los sensores
+      </p>
+    </div>
+  </div>
+  <h2>Video de la creacion del prototipo funcional</h2>
+  <div class="ratio ratio-16x9">
+    <iframe width="800" height="480" src="https://www.youtube.com/embed/yPCHk0m2NtM" title="YouTube video player"
+      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+</main>
+{% endblock page_content %}
+
+{% block scripts %}
+{{ super() }}
+
+{% endblock scripts %}
