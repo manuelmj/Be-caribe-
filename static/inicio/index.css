@@ -94,3 +94,15 @@ a:hover {
 #boton:hover{
     background-color: #FF2525;
 }
+
+.video {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    display: block;
+    margin-bottom: 3px;
+    font-size: 1.6em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: -3px;
+    color: var(--white);
+}
