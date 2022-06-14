@@ -50,9 +50,8 @@ def dashboard(device_name):
     form = DateForm()
     if form.validate_on_submit():
         data = devices_graph(device_name,
-                             datetime.combine(form.date_from.data, time()),
-                             datetime.combine(form.date_to.data, time()))
-
+                             datetime.combine(form.date_from.data, time())+timedelta(hours=5),
+                             datetime.combine(form.date_to.data, time())+timedelta(days=1, hours=4,minutes=59))
         return render_template('dashboard.html', device_name=device_name, data=data, form=form)
 
     return render_template('dashboard.html', device_name=device_name,

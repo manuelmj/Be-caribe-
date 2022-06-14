@@ -64,7 +64,7 @@
 
         var chartData = {
             labels : [{% for dato in data %}
-                "{{ dato.date }}",
+                moment("{{ dato.date }}").subtract(5, 'hours').format('LLL'),
                 {% endfor %}],
             datasets : [{
                 label: 'Temperatura °C',
